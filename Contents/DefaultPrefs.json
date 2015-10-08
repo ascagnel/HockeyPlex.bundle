@@ -1,0 +1,47 @@
+[
+    {
+        "id": "username",
+        "type": "text",
+        "label": "Username",
+        "default": ""
+    },
+    {
+        "id": "password",
+        "type": "text",
+        "label": "Password",
+        "default": "",
+        "option": "hidden",
+        "secure": "true"
+    },
+    {
+        "id": "serverlocation",
+        "type": "enum",
+        "label": "Server Location",
+        "values": [
+            "Automatic",
+            "Asia",
+            "Australia",
+            "Europe",
+            "North America - East Canada",
+            "North America - Central",
+            "North America - East",
+            "North America - West"
+        ],
+        "default": "Automatic"
+    },
+    {
+        "id":"quality",
+        "type": "enum",
+        "label": "Stream Quality",
+        "values": ["High", "Low"],
+        "default": "High"
+    },
+    {
+        "id": "shortnames",
+        "type": "enum",
+        "label": "Short Names",
+        "values": ["Off", "On"],
+        "default": "On"
+    }
+    
+]
