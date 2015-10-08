@@ -1,4 +1,4 @@
-hockeyPlex-noRTMP
+HockeyPlex
 ========
 Plex plugin for [hockeystreams.com](http://www4.hockeystreams.com/assist/categories/13/api+discussion/4814/APP+HockeyPlex)
 Adapting project from kevcenteno (https://github.com/kevcenteno/BallPlex.bundle)
