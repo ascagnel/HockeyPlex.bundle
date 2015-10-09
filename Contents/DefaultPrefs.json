@@ -14,23 +14,14 @@
         "secure": "true"
     },
     {
-        "id": "serverlocation",
+        "id": "leaguefilter",
         "type": "enum",
-        "label": "Server Location",
-        "values": [
-            "Automatic",
-            "Asia",
-            "Australia",
-            "Europe",
-            "North America - East Canada",
-            "North America - Central",
-            "North America - East",
-            "North America - West"
-        ],
-        "default": "Automatic"
+        "label": "League Filter",
+        "values": ["All", "AHL", "NHL", "OHL", "QMJHL", "WHL"],
+        "default": "All"
     },
     {
-        "id":"quality",
+        "id": "quality",
         "type": "enum",
         "label": "Stream Quality",
         "values": ["High", "Low"],
@@ -41,7 +32,29 @@
         "type": "enum",
         "label": "Short Names",
         "values": ["Off", "On"],
-        "default": "On"
+        "default": "Off"
+    },
+//    {
+//        "id":"streamtype",
+//        "type": "enum",
+//        "label": "Stream Type",
+//        "values": ["Live", "DVR"],
+//        "default": "Live"
+//    },
+    {
+        "id": "serverlocation",
+        "type": "enum",
+        "label": "Server Location",
+        "values": [
+            "Automatic",
+            "Asia - Singapore",
+            "Europe - Amsterdam",
+            "Europe - London",
+            "North America - Teksavvy ONLY",
+            "North America - Central",
+            "North America - East",
+            "North America - West"
+        ],
+        "default": "Automatic"
     }
-    
 ]
