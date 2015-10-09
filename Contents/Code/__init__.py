@@ -1,9 +1,9 @@
 # hockeyPlex
 # hockeyStreams.com Plugin for Plex Media Center
 # by Mark Freden m@sitticus.com
-# updated by Kevin Centeno @devteno
-# Version .04
-# Dec 4, 2014
+# updated by Kevin Centeno @devteno and Alfredo Gomez github/agomezgz
+# Version .9
+# Dec 10, 2015
 
 KEY = 'e00a9c3af1391138c121d6d669f54483'
 
@@ -105,29 +105,50 @@ def LiveGamesMenu():
     return oc
 
 ###################################################################################################
-@route(PREFIX + '/getlivegames')
+@route(PREFIX + "/getlivegames")
 def GetLiveGames(url):
     # Set up our array to return
     videos = []
 
     # Get data from server
-    json = JSON.ObjectFromURL(url)
+    game_json = JSON.ObjectFromURL(url)
 
-    if json["status"] == "Success":
+    if game_json["status"] == "Success":
 
         # Get Prefs
-        quality = Prefs['quality']
+        leagueFilter = Prefs["leaguefilter"]
+        # quality = Prefs["quality"]
 
         # Loop thru each to build videos meta
-        for video in json['schedule']:
+        for video in game_json["schedule"]:
 
-            populateVideoArray(videos, video, True)
+            # Set flag to not add video
+            addVid = False
+
+            # Check if league filter is on and filter results
+            if leagueFilter == "All":
+                addVid = True
+            else:
+                # Change this to "contains" so NHL Pre-Season Shows Up
+                if video["event"] == leagueFilter:
+                    addVid = True
+                else:
+                    Log(" Filtering Out Game ID: " + video["id"])
+
+            # If the video should be added, build the meta
+            if addVid:
+                populateVideoArray(videos, video, True)
 
     else:
-        if json["status"] == "Failed":
-            videos.append([0, json["msg"], "", "", "", ""])
+
+        Log(" Get Live Games ERROR - " + game_json["msg"])
+
+        # Send back an empty video with the Failed message so we can display a dialog
+        if game_json["status"] == "Failed":
+            videos.append([0, game_json["msg"], "", "", "", ""])
 
     return videos
+
 
 ###################################################################################################
 @route(PREFIX + '/getlivegamestreams')
@@ -251,18 +272,6 @@ def OnDemandStreamMenu(game_id, title, logo, arena, summary):
         oc.add(GetStream(HD, gameName, HD, logo, arena, summary, False, "mp4"))
     else:
         oc.add(GetStream(SD, gameName, SD, logo, arena, summary, False, "mp4"))
-
-    ### Condensed Games
-    # homeCondensed = game_json['condensed'][0]['homeSrc']
-    # awayCondensed = game_json['condensed'][0]['awaySrc']
-
-    # if homeCondensed == awayCondensed and homeCondensed != "" and awayCondensed != "":
-    #     oc.add(GetStream(homeCondensed, "Condensed Game", homeCondensed, logo, arena, summary, False, "mp4"))
-    # else:
-    #     if homeCondensed:
-    #         oc.add(GetStream(homeCondensed, homeTeam + " Condensed Game", homeCondensed, logo, arena, summary, False, "mp4"))
-    #     if awayCondensed:
-    #         oc.add(GetStream(awayCondensed, awayTeam + " Condensed Game", awayCondensed, logo, arena, summary, False, "mp4"))
 
     ### Highlights
     homeHighlights = game_json['highlights'][0]['homeSrc']
