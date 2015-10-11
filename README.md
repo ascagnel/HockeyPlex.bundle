@@ -10,7 +10,7 @@ You need to install Plex Media Server before you can use this plugin.
 
 **If you have a previous version of hockeyPlex, please remove it before installing an updated version**
 
-1. Download the latest version of hockeyPlex [here](https://github.com/kevcenteno/hockeyPlex.bundle/archive/master.zip)
+1. Download the latest version of hockeyPlex [here](https://github.com/AgomezGZ/HockeyPlex.bundle/archive/master.zip)
 2. Extract the `hockeyPlex.bundle-master` folder from the zip file and rename this folder to `hockeyPlex.bundle`
 3. Move the `hockeyPlex.bundle` folder from step 3 into the Plex Media Server, Plug-ins folder:
   * Mac: `~/Library/Application Support/Plex Media Server/Plug-ins/`
