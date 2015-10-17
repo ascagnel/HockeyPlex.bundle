@@ -273,6 +273,20 @@ def OnDemandStreamMenu(game_id, title, logo, arena, summary):
     else:
         oc.add(GetStream(SD, gameName, SD, logo, arena, summary, False, "mp4"))
 
+    ### Condensed Games
+    homeCondensed = game_json['condensed'][0]['homeSrc']
+    awayCondensed = game_json['condensed'][0]['awaySrc']
+
+    if homeCondensed == awayCondensed and homeCondensed != "" and awayCondensed != "":
+        oc.add(GetStream(homeCondensed, "Condensed Game", homeCondensed, logo, arena, summary, False, "mp4"))
+    else:
+        if homeCondensed:
+            oc.add(GetStream(homeCondensed, homeTeam + " Condensed Game", homeCondensed, logo, arena, summary, False,
+                             "mp4"))
+        if awayCondensed:
+            oc.add(GetStream(awayCondensed, awayTeam + " Condensed Game", awayCondensed, logo, arena, summary, False,
+                             "mp4"))
+
     ### Highlights
     homeHighlights = game_json['highlights'][0]['homeSrc']
     awayHighlights = game_json['highlights'][0]['awaySrc']
@@ -295,16 +309,42 @@ def OnDemandStreamMenu(game_id, title, logo, arena, summary):
 def GetOnDemandGames(url):
     videos = []
 
+    # Get Prefs
+    leagueFilter = Prefs["leaguefilter"]
+    shortNames = Prefs["shortnames"]
+
+    Log(" Pref - LeagueFilter: " + leagueFilter)
+    Log(" Pref - ShortNames: " + shortNames)
+
     # Get data from server
     game_json = JSON.ObjectFromURL(url)
 
-    if 'ondemand' in game_json:
-        for video in game_json['ondemand']:
+    Log(" Got Game JSON - Status: " + game_json["status"])
+
+    if "ondemand" in game_json:
+
+        for video in game_json["ondemand"]:
 
             # If there isn't an iStream, don't list it
-            if video['isiStream'] == 1:
+            if video["isiStream"] == 1:
 
-                populateVideoArray(videos, video)
+                # Don't add any games until they pass the tests
+                addVid = False
+
+                # Check if league filter is on and filter results
+                if leagueFilter == "All":
+                    addVid = True
+                else:
+                    if video["event"] == leagueFilter:
+                        addVid = True
+                    else:
+                        Log(" LeagueFilter Skipped Game ID: " + video["id"])
+
+                # If the video should be added, build meta and add to videos list
+                if addVid:
+                    populateVideoArray(videos, video)
+            else:
+                Log(" No iStream URL for Game ID: " + video["id"])
 
     return videos
 
